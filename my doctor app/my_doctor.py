@@ -4,8 +4,11 @@ import tkinter.messagebox as msg
 from file_manager import *
 from validator import *
 import pickle
+from datetime import datetime
 
 patient_list = read_from_file("patients.dat")
+
+# region def buttons
 
 
 def load_data(patient_list):
@@ -23,13 +26,15 @@ def reset_form():
     dr_full_name.set("")
     diseases.set("")
     medications.set("")
-    date.set("")
+    current_time = datetime.now().strftime("%Y%m%d")
+    date.set(current_time)
     load_data(patient_list)
 
 
 def save_btn_click():
+    current_time = datetime.now().strftime("%Y%m%d")
     patient = (id.get(), patient_full_name.get(), dr_full_name.get(),
-               diseases.get(), medications.get(), date.get())
+               diseases.get(), medications.get(), current_time)
     errors = person_validator(patient)
     if errors:
         msg.showerror("Errors", "\n".join(errors))
@@ -93,12 +98,15 @@ def table_select(x):
         diseases.set(selected_patient[3])
         medications.set(selected_patient[4])
         date.set(selected_patient[5])
+# endregion
 
 
 window = Tk()
 window.title("My doctor app")
-window.geometry("700x400")
+window.geometry("850x400")
 
+
+# region Lables
 # Id
 Label(window, text="Id").place(x=20, y=20)
 id = IntVar(value=1)
@@ -127,9 +135,11 @@ Entry(window, textvariable=medications).place(x=80, y=180)
 # ِDate of visit
 Label(window, text="Date").place(x=20, y=220)
 date = StringVar()
-Entry(window, textvariable=date).place(x=80, y=220)
+Entry(window, textvariable=date, state="readonly").place(x=80, y=220)
 
+# endregion
 
+# region table
 table = ttk.Treeview(window, columns=[1, 2, 3, 4, 5, 6], show="headings")
 table.heading(1, text="Id")
 table.heading(2, text="Patient full name")
@@ -139,17 +149,18 @@ table.heading(5, text="Medications")
 table.heading(6, text="Date of visit")
 
 
-table.column(1, width=60)
-table.column(2, width=110)
-table.column(3, width=110)
-table.column(4, width=100)
-table.column(5, width=100)
-table.column(6, width=100)
+table.column(1, width=60, anchor="center")
+table.column(2, width=100, anchor="center")
+table.column(3, width=120, anchor="center")
+table.column(4, width=120, anchor="center")
+table.column(5, width=100, anchor="center")
+table.column(6, width=100, anchor="center")
 
-table.place(x=230, y=20)
+table.place(x=230, y=20, height=305)
 table.bind("<<TreeviewSelect>>", table_select)
+# endregion
 
-
+# region button
 Button(window, text="Save", width=8, command=save_btn_click).place(
     x=20, y=265, width=50)
 Button(window, text="Edit", width=8, command=edit_btn_click).place(
@@ -158,7 +169,7 @@ Button(window, text="Remove", width=8,
        command=remove_btn_click).place(x=167, y=265, width=50)
 Button(window, text="Clear", width=8, command=reset_form).place(
     x=20, y=300, width=200)
-
+# endregion
 reset_form()
 
 
