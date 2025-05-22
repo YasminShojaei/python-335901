@@ -105,6 +105,7 @@ window = Tk()
 window.title("My doctor app")
 window.geometry("850x400")
 
+window.geometry("700x400")
 
 # region Lables
 # Id
