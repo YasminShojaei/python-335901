@@ -18,7 +18,6 @@ def person_validator(patient):
     if not (type(patient[4]) == str and re.match(r"^[a-zA-Z\s]{3,30}$", patient[4])):
         errors.append('name of medikament is Invalid')
 
-    if not (type(patient[5]) == str and re.match(r"^\d{6}$", patient[5])):
+    if not (type(patient[5]) == str and re.match(r"^\d{8}$", patient[5])):
         errors.append('Date is Invalid')
-
     return errors

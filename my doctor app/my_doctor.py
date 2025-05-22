@@ -97,7 +97,7 @@ def table_select(x):
 
 window = Tk()
 window.title("My doctor app")
-window.geometry("700x300")
+window.geometry("700x400")
 
 # Id
 Label(window, text="Id").place(x=20, y=20)
@@ -150,14 +150,14 @@ table.place(x=230, y=20)
 table.bind("<<TreeviewSelect>>", table_select)
 
 
-Button(window, text="Save", width=6, command=save_btn_click).place(
+Button(window, text="Save", width=8, command=save_btn_click).place(
     x=20, y=265, width=50)
-Button(window, text="Edit", width=6, command=edit_btn_click).place(
-    x=80, y=265, width=50)
-Button(window, text="Remove", width=6,
-       command=remove_btn_click).place(x=140, y=265, width=50)
-Button(window, text="Clear", width=6, command=reset_form).place(
-    x=200, y=265, width=50)
+Button(window, text="Edit", width=8, command=edit_btn_click).place(
+    x=95, y=265, width=50)
+Button(window, text="Remove", width=8,
+       command=remove_btn_click).place(x=167, y=265, width=50)
+Button(window, text="Clear", width=8, command=reset_form).place(
+    x=20, y=300, width=200)
 
 reset_form()
 
