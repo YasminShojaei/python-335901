@@ -105,7 +105,6 @@ window = Tk()
 window.title("My doctor app")
 window.geometry("850x400")
 
-window.geometry("700x400")
 
 # region Lables
 # Id
@@ -161,6 +160,7 @@ table.place(x=230, y=20, height=305)
 table.bind("<<TreeviewSelect>>", table_select)
 # endregion
 
+
 # region button
 Button(window, text="Save", width=8, command=save_btn_click).place(
     x=20, y=265, width=50)
@@ -171,6 +171,7 @@ Button(window, text="Remove", width=8,
 Button(window, text="Clear", width=8, command=reset_form).place(
     x=20, y=300, width=200)
 # endregion
+
 reset_form()
 
 
