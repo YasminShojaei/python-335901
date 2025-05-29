@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter.ttk as ttk
 import tkinter.messagebox as msg
 from file_manager import *
+from my_doctor_app.patient import Patient
 from validator import *
 import pickle
 from datetime import datetime
@@ -16,8 +17,8 @@ def load_data(patient_list):
     for row in table.get_children():
         table.delete(row)
 
-    for person in patient_list:
-        table.insert("", END, values=person)
+    for patient in patient_list:
+        table.insert("", END, values=patient.to_tuple())
 
 
 def reset_form():
@@ -27,15 +28,15 @@ def reset_form():
     diseases.set("")
     medications.set("")
     current_time = datetime.now().strftime("%Y%m%d")
-    date.set(current_time)
+    visit_date.set(current_time)
     load_data(patient_list)
 
 
 def save_btn_click():
     current_time = datetime.now().strftime("%Y%m%d")
-    patient = (id.get(), patient_full_name.get(), dr_full_name.get(),
+    patient = Patient(id.get(), patient_full_name.get(), dr_full_name.get(),
                diseases.get(), medications.get(), current_time)
-    errors = person_validator(patient)
+    errors = patient.validate()
     if errors:
         msg.showerror("Errors", "\n".join(errors))
     else:
@@ -51,15 +52,15 @@ def edit_btn_click():
         msg.showwarning("Warning", "No patient selected")
         return
 
-    updated_patient = (id.get(), patient_full_name.get(), dr_full_name.get(),
-                       diseases.get(), medications.get(), date.get())
-    errors = person_validator(updated_patient)
+    updated_patient = Patient(id.get(), patient_full_name.get(), dr_full_name.get(),
+                              diseases.get(), medications.get(), visit_date.get())
+    errors = updated_patient.validate()
     if errors:
         msg.showerror("Errors", "\n".join(errors))
         return
 
     for i, p in enumerate(patient_list):
-        if p[0] == updated_patient[0]:
+        if p[0] == updated_patient.id:
             patient_list[i] = updated_patient
             break
 
@@ -90,14 +91,14 @@ def table_select(x):
     selected_items = table.selection()
     if not selected_items:
         return
-    selected_patient = table.item(table.focus())["values"]
+    selected_patient =  Patient(* table.item(table.focus())["values"])
     if selected_patient:
-        id.set(selected_patient[0])
-        patient_full_name.set(selected_patient[1])
-        dr_full_name.set(selected_patient[2])
-        diseases.set(selected_patient[3])
-        medications.set(selected_patient[4])
-        date.set(selected_patient[5])
+        id.set(selected_patient.id)
+        patient_full_name.set(selected_patient.full_name)
+        dr_full_name.set(selected_patient.dr_name)
+        diseases.set(selected_patient.dieses)
+        medications.set(selected_patient.medications)
+        visit_date.set(selected_patient.visit_date)
 # endregion
 
 
@@ -134,8 +135,8 @@ Entry(window, textvariable=medications).place(x=80, y=180)
 
 # ِDate of visit
 Label(window, text="Date").place(x=20, y=220)
-date = StringVar()
-Entry(window, textvariable=date, state="readonly").place(x=80, y=220)
+visit_date = StringVar()
+Entry(window, textvariable=visit_date, state="readonly").place(x=80, y=220)
 
 # endregion
 
