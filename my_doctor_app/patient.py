@@ -1,5 +1,6 @@
 import re
-from my_doctor_app.validator import patient_validator
+from validator import patient_validator
+
 
 class Patient:
 

@@ -2,7 +2,7 @@ from tkinter import *
 import tkinter.ttk as ttk
 import tkinter.messagebox as msg
 from file_manager import *
-from my_doctor_app.patient import Patient
+from patient import *
 from validator import *
 import pickle
 from datetime import datetime
@@ -35,7 +35,7 @@ def reset_form():
 def save_btn_click():
     current_time = datetime.now().strftime("%Y%m%d")
     patient = Patient(id.get(), patient_full_name.get(), dr_full_name.get(),
-               diseases.get(), medications.get(), current_time)
+                      diseases.get(), medications.get(), current_time)
     errors = patient.validate()
     if errors:
         msg.showerror("Errors", "\n".join(errors))
@@ -91,7 +91,7 @@ def table_select(x):
     selected_items = table.selection()
     if not selected_items:
         return
-    selected_patient =  Patient(* table.item(table.focus())["values"])
+    selected_patient = Patient(* table.item(table.focus())["values"])
     if selected_patient:
         id.set(selected_patient.id)
         patient_full_name.set(selected_patient.full_name)
